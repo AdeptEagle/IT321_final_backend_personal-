@@ -3,7 +3,7 @@
     "host": "localhost",
     "port": 3306,
     "user": "root",
-    "password": "password",
+    "password": "root",
     "database": "full-stack-test"
   },
   "secret": "kortbuset",
@@ -12,8 +12,8 @@
     "host": "smtp.ethereal.email",
     "port": 587,
     "auth": {
-      "user": "katrine.reichert@ethereal.email",
-      "pass": "MEgStnfPjcsUM9ZjTJ"
+       "user": "alberto.schiller@ethereal.email",
+        "pass": "mpaecUkVsg8gQtKhsY"
     }
   }
 }   
