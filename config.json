@@ -1,11 +1,11 @@
 {
  "database": {
-    "host": "btwqmdbe3qwtefo91crc-mysql.services.clever-cloud.com",
+    "host": "localhost",
     "port": 3306,
-    "user": "umokwtcyzmatx0mr",
-    "password": "LXo1Lb53fX8hACpjITQL",
-    "database": "btwqmdbe3qwtefo91crc",
-    "connectionString": "mysql://umokwtcyzmatx0mr:LXo1Lb53fX8hACpjITQL@btwqmdbe3qwtefo91crc-mysql.services.clever-cloud.com:3306/btwqmdbe3qwtefo91crc"
+    "user": "root",
+    "password": "root",
+    "database": "full-stack-test",
+    "connectionString": "postgres://user:password@host:port/database"
   },
   "secret": "364b2f35-a78b-43be-ad7c-d608780d2f6e",
   "emailFrom": "info@node-mysql-signup-verification-api.com",
