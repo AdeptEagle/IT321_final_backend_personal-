@@ -1,4 +1,4 @@
-const config = require('config.json')
+const config = require('../config.json')
 const mysql = require('mysql2/promise')
 const { Sequelize } = require('sequelize')
 
@@ -6,10 +6,19 @@ module.exports = db = { }
 
 async function initialize(){
   const { host, port, user, password, database } = config.database
-  const connection = await mysql.createConnection({ host, port, user, password })
-  await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`)
+  const connection = await mysql.createConnection({ 
+    host, 
+    port, 
+    user, 
+    password,
+    database  // Add database name here
+  })
 
-  const sequelize = new Sequelize(database, user, password, { dialect: 'mysql' })
+  const sequelize = new Sequelize(database, user, password, { 
+    host,
+    port,
+    dialect: 'mysql'
+  })
 
   db.Account = require('../accounts/account.model')(sequelize)
   db.Department = require('../departments/department.model')(sequelize)
@@ -38,7 +47,7 @@ async function initialize(){
     foreignKey: 'departmentId'
   })
 
-  await sequelize.sync({ force: true })
+  await sequelize.sync()
 }
 
 initialize()
