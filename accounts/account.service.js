@@ -26,15 +26,14 @@ module.exports = {
 async function authenticate({ email, password, ipAddress }){
   const account = await db.Account.scope('withHash').findOne({ where: { email}})
 
-  if(!account || !account.isVerified || !(await bcrypt.compare(password, account.passwordHash))){
+  if(!account || !(await bcrypt.compare(password, account.passwordHash))){
     throw 'Email or password is incorrect'
   } 
 
   if(!account.isActive){
-    throw 'Account is inactive. Please contact administrator bitch'
+    throw 'Account is inactive. Please contact administrator'
   }
   
-  // console.log(account.dataValues)
   const jwtToken = generateJwtToken(account)
   const refreshToken = generateRefreshToken(account, ipAddress)
   await refreshToken.save()
@@ -46,14 +45,12 @@ async function authenticate({ email, password, ipAddress }){
   }
 }
 
-
 async function refreshToken({ token, ipAddress }) {
   const refreshToken = await getRefreshToken(token)
   const account = await refreshToken.getAccount()
 
   const newRefreshToken = generateRefreshToken(account, ipAddress)
   refreshToken.revoked = Date.now()
-  // console.log('revoked col: ', refreshToken.revoked)
   refreshToken.revokedByIp = ipAddress
   refreshToken.replacedByToken = newRefreshToken.token
   await refreshToken.save()
@@ -76,7 +73,6 @@ async function revokeToken({ token, ipAddress }) {
   await refreshToken.save()
 }
 
-
 async function register(params, origin) {
   // validate
   if(await db.Account.findOne({ where: { email: params.email}})) {
@@ -89,14 +85,12 @@ async function register(params, origin) {
   // first registered account is an admin
   const isFirstAccount = (await db.Account.count()) === 0
   account.role = isFirstAccount ? Role.Admin : Role.User
-  account.verificationToken = randomTokenString()
+  account.verified = Date.now() // Auto-verify the account
   account.isActive = true
   // hash password
   account.passwordHash = await hash(params.password)
 
   await account.save()
-
-  await sendVerificationEmail(account, origin)
 }
 
 async function verifyEmail({ token }) {
@@ -120,7 +114,6 @@ async function forgotPassword({ email }, origin) {
 
   await sendPasswordResetEmail(account, origin)
 }
-
 
 async function validateResetToken({ token }) {
   const account = await db.Account.findOne({
@@ -162,8 +155,8 @@ async function create(params) {
   }
 
   const account = new db.Account(params)
-  account.verified = Date.now()
-  // account.isActive = true
+  account.verified = Date.now() // Auto-verify the account
+  account.isActive = true
   account.passwordHash = await hash(params.password)
 
   await account.save()
@@ -224,7 +217,6 @@ function generateRefreshToken(account, ipAddress){
   })
 }
 
-
 function randomTokenString(){
   return crypto.randomBytes(40).toString('hex')
 }
@@ -235,7 +227,6 @@ function basicDetails(account){
   
   return { id, title, firstName, lastName, email, role, created, updated, isVerified, isActive, employee }
 }
-
 
 async function sendVerificationEmail(account, origin) { 
   let message
@@ -259,7 +250,6 @@ async function sendVerificationEmail(account, origin) {
           ${message}`
   })
 }
-
 
 async function sendAlreadyRegisteredEmail(email, origin) {
   let message

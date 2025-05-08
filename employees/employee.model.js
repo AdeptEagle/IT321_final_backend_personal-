@@ -4,6 +4,7 @@ module.exports = model
 
 function model(sequelize){
   const attributes = {
+    employeeId: { type: DataTypes.STRING, allowNull: false },
     position: { type: DataTypes.STRING, allowNull: false },
     userId: { type: DataTypes.INTEGER, allowNull: false },  // set to cascade
     departmentId: { type: DataTypes.INTEGER, allowNull: true },  // set to null

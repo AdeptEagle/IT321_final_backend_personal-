@@ -29,7 +29,6 @@ async function initialize(){
     foreignKey: 'userId'
   })  
 
-
   // one to many (employee -> department) 
   db.Department.hasMany(db.Employee, {
     foreignKey: 'departmentId',
@@ -39,7 +38,7 @@ async function initialize(){
     foreignKey: 'departmentId'
   })
 
-  await sequelize.sync({ alter: true })
+  await sequelize.sync({ force: true })
 }
 
 initialize()
