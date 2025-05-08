@@ -1,0 +1,20 @@
+{
+  "database": {
+    "host": "btwqmdbe3qwtefo91crc-mysql.services.clever-cloud.com",
+    "port": 3306,
+    "user": "umokwtcyzmatx0mr",
+    "password": "LXo1Lb53fX8hACpjITQL",
+    "database": "btwqmdbe3qwtefo91crc",
+    "dialect": "mysql"
+  },
+  "secret": "364b2f35-a78b-43be-ad7c-d608780d2f6e",
+  "emailFrom": "info@node-mysql-signup-verification-api.com",
+  "smtpOptions": {
+    "host": "smtp.ethereal.email",
+    "port": 587,
+    "auth": {
+      "user": "alberto.schiller@ethereal.email",
+      "pass": "mpaecUkVsg8gQtKhsY"
+    }
+  }
+} 
